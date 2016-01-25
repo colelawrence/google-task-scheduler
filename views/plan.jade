@@ -1,0 +1,24 @@
+extends layout
+
+//- Organization needs to be logged in
+block content
+  .page-header.text-center
+    .page-title
+      h1=disp
+  .row
+    .col-xs-12
+      style.
+        .header-group, .page-header {display:none}
+        tbody tr td, thead tr td { padding: 1em; }
+        .action#add-calendar { background: #e9f7e7; cursor: pointer }
+        td.action { min-width: 1em }
+        tr.info td pre { padding: 0; background: transparent; border: none; }
+        tr.info td { background: whitesmoke; }
+        .tog .label {display:none}
+        .tog .toga {display:inline}
+        .tog:hover .label {display:inline}
+        .tog:hover .toga {display:none}
+      pre=JSON.stringify(test1, null, 2)
+      pre=JSON.stringify(test2, null, 2)
+      pre=JSON.stringify(test3, null, 2)
+//-block footer

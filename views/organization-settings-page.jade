@@ -18,10 +18,11 @@ block content
         .tog .toga {display:inline}
         .tog:hover .label {display:inline}
         .tog:hover .toga {display:none}
+      a(href="/plan") Plan out events
 
       h2 Calendars
-      if !depositSet
-        p No Deposit is set!
+      if !deposit
+        p: strong No Deposit is set!
       table.table
         thead
           tr
@@ -67,7 +68,7 @@ block content
               td
                 if calendar.checked
                   a(href="/settings/" + cId) More Settings
-                else
+                else if calendar.id !== deposit
                   a(href="?a=activate&cId=" + cId style="color:grey") Activate
             if calendar.checked
               tr.info
@@ -76,14 +77,13 @@ block content
                 td(colspan=3)
                   pre=calendar.mindexinfo
               tr(style="height:20px")
-      h1 Tasks
+      h2 Tasks
       table.table
         thead
           tr
             td.action
             td Name
             td Toggle Activation
-            td Planning Controls
             td
         tbody
           for tasklist in tasklists
@@ -97,17 +97,12 @@ block content
                   span.label.label-success.toga Active
                   span.label.label-danger Delete
               td
-                a.tog(href="?a=tasklist-deposit&tlId=" + tlId)
-                  span.label.label-default.toga=tasklist.mlastindex
-                  span.label.label-success Reindex
-              td
           for tasklist in inactivetasklists
             - var tlId = encodeURIComponent(tasklist.id)
             tr
               td
               td
                 span=tasklist.title
-              td
               td
               td
                 a(href="?a=tasklist-activate&tlId=" + tlId style="color:grey") Activate

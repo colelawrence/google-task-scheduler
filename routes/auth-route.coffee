@@ -55,8 +55,10 @@ router.get '/set-session', (req, res) ->
         console.log "auth error", error
       req.session.userName = user.name
       req.session.picture = user.picture
-      req.session.calendarIds = user.calendars
-      res.redirect '/'
+      
+      redir = req.session.redir
+      req.session.redir = null
+      res.redirect redir or "/"
   else
     res.redirect '/'
 

@@ -6,7 +6,7 @@ googleHook = require './google-calendar'
 
 ISO = (str) ->
   new Date(Date.parse(str))
-
+###
 updateTask = (evM, gevent, t, callback) ->
   # Make changes if changed
   evM.s = ISO(gevent.start.dateTime)  if gevent.start?.dateTime?
@@ -64,6 +64,7 @@ exports.depositTasks = (tasklistIds, callback) ->
       next()
     , callback
   )
+###
 
 unplan = (auth, cId, callback) ->
   (error, plannedTasks) ->
@@ -126,4 +127,3 @@ exports.delete = (auth, user, tlId, callback) ->
 
     else callback error
 
-exports.deposit = (auth, user, tlId, callback) ->

@@ -22,6 +22,9 @@ statics = {
   getCalendar: (calendarId, callback) ->
     this.findOne({ calendarId })
     .exec callback
+  getCalendars: (email, callback) ->
+    this.find({ owner: email })
+    .exec callback
   getIndexedCalendars: (callback) ->
     this.find({ suspended: false }, 'calendarId')
     .exec (error, calColl) ->

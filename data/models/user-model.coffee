@@ -7,7 +7,7 @@ userSchema = mongoose.Schema {
   name:     String,
   picture:  String,
   scheduling_script: String,
-  calendars:  [String],
+  deposit: String,
   tokens:     Object
 }
 
@@ -19,7 +19,7 @@ statics = {
 
     userQuery = this.findOne { 'email': email }
 
-    userQuery.select('picture name email calendars tasklists tokens scheduling_script')
+    userQuery.select('picture name email calendars deposit tasklists tokens scheduling_script')
 
     userQuery.exec callback
 

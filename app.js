@@ -35,10 +35,12 @@ app.use(session({
 }))
 
 
-app.use('/', routes);
+app.use('/plan', require("./data/plan-middleware.coffee"))
+app.use('/plan', require("./routes/plan-route.coffee"))
 app.use('/auth', authRoute);
 app.use('/action', actionRoute);
 app.use('/settings', settingsRoute);
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

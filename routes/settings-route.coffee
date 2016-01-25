@@ -96,7 +96,7 @@ router.get '/', (req, res) ->
                               tl.mlastindex ?= "Never"
 
                             locals = {
-                              title: "Organization Settings",
+                              title: "Settings",
                               deposit: user.deposit,
                               types,
                               calendars,
@@ -143,7 +143,6 @@ router.get '/', (req, res) ->
                           render "Calendar-doesnt-exist!"
 
                     when "delete"
-                      user.calendars = user.calendars.filter ((e)->e.calendarId isnt cId)
                       user.save (error)->
                         if error? then render error else
 
@@ -169,7 +168,6 @@ router.get '/', (req, res) ->
 
                 else if a is "activate"
                   # Add calendar to user's calendars
-                  user.calendars.push cId
                   user.save (error, user) ->
                     if error?
                       render error
@@ -209,32 +207,36 @@ router.get '/', (req, res) ->
                               }).save render
                 # Deposits
                 else if a is "set-deposit"
-                  taskManager.removeDeposit user.deposit, (error) ->
+                  taskManager.removePlansByCalendar auth, user.deposit, (error) ->
                     if error?
                       render error
 
                     else
                       user.deposit = cId
+                      acted = { a: "Set as deposit", targetCalendar: cId }
                       user.save render
                   
 
                 else if a is "unset-deposit"
-                  taskManager.removeDeposit user.deposit, (error) ->
+                  taskManager.removePlansByCalendar auth, user.deposit, (error) ->
                     if error?
                       render error
 
                     else
                       user.deposit = null
+                      acted = { a: "Removed from deposit", targetCalendar: cId }
                       user.save render
 
                 else if a is "tasklist-delete"
+                  acted = { a: "Deleted tasklist history" }
                   taskManager.delete(auth, user, req.query.tlId, render)
 
                 else if a is "tasklist-activate"
+                  acted = { a: "Activated tasklist" }
                   taskManager.activate(auth, user, req.query.tlId, render)
 
-                else if a is "tasklist-deposit"
-                  taskManager.deposit(auth, user, req.query.tlId, render)
+                else if a is "tasklist-index"
+                  taskManager.index(auth, user, req.query.tlId, render)
 
                 else
                   render()

@@ -1,0 +1,38 @@
+extends layout
+
+//- Organization needs to be logged in
+block content
+  .page-header.text-center
+    .page-title
+      h1="Settings: " + calendarName
+  .row
+    .col-xs-12
+      a(href="/settings") Return to Calendars List
+      br
+      h2 Calendar Info
+      div(style="border-bottom: 2px solid " + calendarColor)
+      br
+      form(method="post")
+        div
+          label(for="name") Organization Name
+          br
+          input.form-control(type="text" value=calendarName placeholder="name" name="name" onkeyup="document.getElementById('slug').value = this.value.toLowerCase().replace(/[^a-z0-9]+/g, '-')")
+        div
+          label(for="slug") URL handle
+          br
+          input.form-control#slug(type="text" value=calendarSlug placeholder="slug" name="slug" disabled=true title="The url friendly way to access your organization")
+        div
+          label(for="type") Organization Type
+          br
+          select.form-control(type="text" name="type" title="Type of this organization")
+            each key in Object.keys(types)
+              option(value=key selected=(selectedType===key))=types[key]
+        div
+          label(for="description") Description
+          br
+          textarea.form-control(type="text" rows="5" placeholder="description" name="description")=calendarDescription
+        
+        br
+        input.pull-right.btn.btn-default(type="submit" name="submit" value="Update Calendar Information")
+
+//-block footer

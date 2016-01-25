@@ -1,0 +1,119 @@
+extends layout
+
+//- Organization needs to be logged in
+block content
+  .page-header.text-center
+    .page-title
+      h1=disp
+  .row
+    .col-xs-12
+      style.
+        .header-group, .page-header {display:none}
+        tbody tr td, thead tr td { padding: 1em; }
+        .action#add-calendar { background: #e9f7e7; cursor: pointer }
+        td.action { min-width: 1em }
+        tr.info td pre { padding: 0; background: transparent; border: none; }
+        tr.info td { background: whitesmoke; }
+        .tog .label {display:none}
+        .tog .toga {display:inline}
+        .tog:hover .label {display:inline}
+        .tog:hover .toga {display:none}
+
+      h2 Calendars
+      if !depositSet
+        p No Deposit is set!
+      table.table
+        thead
+          tr
+            td.action
+            td Name
+            td Toggle Activation
+            td Toggle Suspension
+            td Reindex Events
+            td
+        tbody
+          for calendar in calendars
+            - var cId = encodeURIComponent(calendar.id)
+            tr
+              td(style="background-color:" + calendar.backgroundColor)
+              td
+                span=calendar.summary
+              td
+                if calendar.checked
+                  a.tog(href="?a=delete&cId=" + cId style="color:red")
+                    span.label.label-success.toga Active
+                    span.label.label-danger Delete
+                else if deposit == null
+                  a(href="?a=set-deposit&cId=" + cId style="color:grey") Set as Deposit
+                else if calendar.id === deposit
+                  a.tog(href="?a=unset-deposit&cId=" + cId style="color:red")
+                    span.label.label-info.toga Deposit
+                    span.label.label-danger Remove Deposit 
+              td
+                if calendar.checked
+                  if calendar.suspended
+                    a.tog(href="?a=unsuspend&cId=" + cId)
+                      span.label.label-danger.toga Suspended
+                      span.label.label-success Unsuspend
+                  else
+                    a.tog(href="?a=suspend&cId=" + cId)
+                      span.label.label-success.toga Indexed
+                      span.label.label-danger Suspend
+              td
+                if calendar.checked
+                  a.tog(href="?a=reindex&cId=" + cId)
+                    span.label.label-default.toga=calendar.mlastindex
+                    span.label.label-success Reindex
+              td
+                if calendar.checked
+                  a(href="/settings/" + cId) More Settings
+                else
+                  a(href="?a=activate&cId=" + cId style="color:grey") Activate
+            if calendar.checked
+              tr.info
+                td(colspan=3)
+                  pre="Type: " + calendar.mtype + "\nName: " + calendar.mname +  "\nDesc: " + calendar.mdescription
+                td(colspan=3)
+                  pre=calendar.mindexinfo
+              tr(style="height:20px")
+      h1 Tasks
+      table.table
+        thead
+          tr
+            td.action
+            td Name
+            td Toggle Activation
+            td Planning Controls
+            td
+        tbody
+          for tasklist in tasklists
+            - var tlId = encodeURIComponent(tasklist.tlId)
+            tr
+              td(style="background-color:" + tasklist.backgroundColor)
+              td
+                span=tasklist.title
+              td
+                a.tog(href="?a=tasklist-delete&tlId=" + tlId style="color:red")
+                  span.label.label-success.toga Active
+                  span.label.label-danger Delete
+              td
+                a.tog(href="?a=tasklist-deposit&tlId=" + tlId)
+                  span.label.label-default.toga=tasklist.mlastindex
+                  span.label.label-success Reindex
+              td
+          for tasklist in inactivetasklists
+            - var tlId = encodeURIComponent(tasklist.id)
+            tr
+              td
+              td
+                span=tasklist.title
+              td
+              td
+              td
+                a(href="?a=tasklist-activate&tlId=" + tlId style="color:grey") Activate
+
+      if acted != null
+        div(style="padding:1em; background:whitesmoke; margin-top:2em")
+          strong(style="width:13em; display:inline-block;")=acted.a
+          span=acted.targetCalendar
+//-block footer

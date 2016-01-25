@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  style.
+    .login-button {
+      position:fixed;
+      top: 1em;
+      right: 1em;
+    }
+    .error-message {
+      width: 100%;
+      display: block;
+      padding: 1em;
+      background: #ff6655;
+      color: red;
+    }
+  if session.email != null
+    a.login-button(href="/auth/logout") Logout
+  else
+    a.login-button(href="/auth/login") Login
+  if error != null
+    .error-message
+      span= error
+  h1= title
+
+  if session.email != null
+    p Welcome to #{title}, #{session.email}!
+    p
+      a(href="/settings") Calendar Settings
+
+
+  form(method="POST" action="/action" target="res")
+    input(name="do" value="test")
+    br
+    input(name="data")
+    br
+    input(type="submit")
+
+  iframe(name="res")
+
+
+  pre= JSON.stringify(session, null, 2)
+
+  p Hello

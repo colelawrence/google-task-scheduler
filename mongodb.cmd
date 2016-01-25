@@ -1,0 +1,1 @@
+E:\Bay\MongoDB\mongod.exe --dbpath E:\Bay\MongoDB_data\

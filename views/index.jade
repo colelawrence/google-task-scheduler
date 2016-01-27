@@ -28,17 +28,6 @@ block content
     p
       a(href="/settings") Calendar Settings
 
-
-  form(method="POST" action="/action" target="res")
-    input(name="do" value="test")
-    br
-    input(name="data")
-    br
-    input(type="submit")
-
-  iframe(name="res")
-
-
   pre= JSON.stringify(session, null, 2)
 
   p Hello

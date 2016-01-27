@@ -13,9 +13,11 @@ updateEvent = (evM, gevent, t, callback) ->
   evM.s = ISO(gevent.start.dateTime)  if gevent.start?.dateTime?
   evM.e = ISO(gevent.end.dateTime)    if gevent.end?.dateTime?
 
+  evM.o = gevent.colorId        if gevent.colorId?
+
   evM.hL = gevent.htmlLink      if gevent.htmlLink?
   evM.iC = gevent.iCalUID       if gevent.iCalUID?
-  
+
   evM.i.name = gevent.summary       if gevent.summary?
   evM.i.loc  = gevent.location      if gevent.location?
   evM.i.desc = gevent.description   if gevent.description?
@@ -53,7 +55,7 @@ exports.indexEvents = (auth, calendarId, callback) ->
   Calendar.getCalendar calendarId, (error, calendar) ->
     if error?
       callback error
-    
+
     else if not calendar?
       # Calendar not set-up
       callback null, false
@@ -61,8 +63,8 @@ exports.indexEvents = (auth, calendarId, callback) ->
     else
       gcalendar = googleHook.getCalendar()
 
-      fields = "items(description,end,htmlLink,iCalUID,originalStartTime,id,recurrence,location,recurringEventId,start,status,summary,visibility),nextPageToken,nextSyncToken,updated"
-      
+      fields = "items(colorId,description,end,htmlLink,iCalUID,originalStartTime,id,recurrence,location,recurringEventId,start,status,summary,visibility),nextPageToken,nextSyncToken,updated"
+
       # This nextPageToken is set if there is another page
       nextPageToken = null
 
@@ -96,7 +98,7 @@ exports.indexEvents = (auth, calendarId, callback) ->
           if error?
             nextPage error
           else
-            
+
             async.each(
               geventList.items
               , (gevent, nextGevent) ->
@@ -187,7 +189,7 @@ exports.indexEvents = (auth, calendarId, callback) ->
                                 cId:  calendarId,  # CalendarId
                                 cal,  # Calendar document
                                 eId,  # EventId for syncing
-                                c: true, # Cancelling event 
+                                c: true, # Cancelling event
                                 reId: gevent.recurringEventId,
                                 s:   gevent.originalStartTime.dateTime
                               }
@@ -227,4 +229,3 @@ exports.indexEvents = (auth, calendarId, callback) ->
             exports.reindexEvents [calendarId], (error) ->
               callback error, total
       )
-

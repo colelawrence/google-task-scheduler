@@ -9,18 +9,21 @@ getAllEvents = require '../data/get-all-events.coffee'
 
 # /plan
 router.get '/', (req, res, next) ->
+  res.render 'plan', {
+    title: 'Task Planner'
+  }
+
+router.get '/json', (req, res, next) ->
   getAllTasks req.user, req.auth, (error, allTasks) ->
     if error? then next error else
-      getAllEvents req.user, req.auth, (error, allEvents) ->
+      getAllEvents req.user, req.auth, (error, allEvents, allEventMetadatas) ->
         if error? then next error else
-          res.render 'plan', {
-            title: 'Task Scheduler',
-            test1: allTasks
-            test2: allEvents
-            test3: req.user.scheduling_script
+          res.json {
+            tasks: allTasks
+            events: allEvents
+            eventMetadatas: allEventMetadatas
+            script: req.user.scheduling_script
           }
-            
-
 
 
 module.exports = router

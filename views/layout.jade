@@ -8,4 +8,7 @@ html
     link(rel='stylesheet' href='/stylesheets/bootstrap-3.1.1/bootstrap.min.css')
 
   body
+    .status-bar
+      if email
+        span.email=email
     block content

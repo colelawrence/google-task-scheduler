@@ -13,11 +13,12 @@ eventMetaSchema = mongoose.Schema {
     desc: String, # Description
     loc:  String  # Location as String
   },
-  c: Boolean    # Cancelling event (mostly for recurring instance cancellation)  
+  c: Boolean    # Cancelling event (mostly for recurring instance cancellation)
   s: Date,      # Start
   e: Date,      # End
   r: String,    # Recurrence
-  reId: String  # Recurring Parent Event ID 
+  o: String,    # colorId
+  reId: String  # Recurring Parent Event ID
 }
 
 statics = {
